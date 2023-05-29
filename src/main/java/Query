@@ -1,0 +1,51 @@
+1.
+SELECT nome, cognome
+	FROM public.clienti
+	WHERE EXTRACT (YEAR FROM data_nascita) = 1982;
+
+2.	
+SELECT COUNT(*)
+	FROM public.fatture
+	WHERE iva = 20;
+
+3.	
+SELECT SUM(importo), COUNT(*)
+	FROM public.fatture
+	GROUP BY EXTRACT (YEAR FROM data_fattura);
+	
+3B. questo visualizza pure l'anno a cui fa riferimento la somma
+SELECT EXTRACT (YEAR FROM data_fattura) AS anno, SUM(importo), COUNT(*)
+	FROM public.fatture
+	GROUP BY anno;
+	
+4.
+SELECT *
+	FROM public.prodotti
+	WHERE EXTRACT (YEAR FROM data_attivazione) = 2017 and in_produzione = true OR in_commercio = true;
+	
+5.
+SELECT COUNT(*), EXTRACT (YEAR FROM data_fattura) AS anno_fattura
+	FROM public.fatture
+	WHERE  iva = 20
+	GROUP BY anno_fattura;
+	
+6. non riesco a selezionare solo le annate con più di due fatture di tipo A
+SELECT COUNT(*) AS somma_fatture_per_anno, EXTRACT(YEAR FROM data_fattura) AS anno_fattura
+	FROM public.fatture
+	WHERE tipologia = 'A'
+	GROUP BY anno_fattura;
+	
+7.
+SELECT numero_fattura, importo, iva, data_fattura, denominazione
+	FROM public.fatture fattura
+	INNER JOIN public.fornitori fornitore
+	ON fornitore.numero_fornitore = fattura.numero_fornitore;
+	
+8.
+SELECT SUM(importo), regione_residenza
+	FROM public.fatture fattura
+	INNER JOIN public.clienti cliente
+	ON fattura.id_cliente = cliente.numero_cliente
+	GROUP BY regione_residenza;
+	
+9. 
